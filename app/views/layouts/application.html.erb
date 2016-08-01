@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>GoogleMap</title>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/css/materialize.min.css">
+
+    <!-- Compiled and minified JavaScript -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/0.97.7/js/materialize.min.js"></script>
+  <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
+  <%= javascript_include_tag 'application', 'data-turbolinks-track' => true %>
+  <%= csrf_meta_tags %>
+</head>
+<body>
+  <div id="map">
+  </div>
+    
+<%= yield %>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDYaM8966dIas7-xfy4e9dogbAW_jbW5zs&libraries=places&signed_in=true&callback=initMap"
+  async defer></script>
+<%#<script>%>
+  <%#$('.modal-trigger').leanModal({%>
+    <%#ready: function() {%>
+      <%#var map = document.getElementById("googleMap");%>
+      <%#google.maps.event.trigger(map, 'resize');%>
+    <%#}%>
+  <%#});%>
+<%#</script>%>
+</body>
+</html>

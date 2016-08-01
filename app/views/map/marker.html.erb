@@ -1,0 +1,41 @@
+<script>
+
+  // The following example creates a marker in Stockholm, Sweden using a DROP
+  // animation. Clicking on the marker will toggle the animation between a BOUNCE
+  // animation and no animation.
+
+  var marker;
+
+  function initMap() {
+    var map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 13,
+      center: {lat: 59.325, lng: 18.070}
+    });
+
+    var ms_image = {
+        url: 'http://dankook.likelion.net/assets/home/likelion_logo-5a22f950142a93deb35580736521d9785a1d962a6334ef96137a9a1a30972733.png',
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(100, 100),
+        scaledSize: new google.maps.Size(60, 54)
+    };
+
+    marker = new google.maps.Marker({
+      map: map,
+      clickable: true,
+      draggable: true,
+      icon: ms_image,
+      animation: google.maps.Animation.BOUNCE,
+      position: {lat: 59.327, lng: 18.067}
+    });
+    marker.addListener('click', toggleBounce);
+  }
+
+  function toggleBounce() {
+    if (marker.getAnimation() !== null) {
+      marker.setAnimation(null);
+      } else {
+      marker.setAnimation(google.maps.Animation.BOUNCE);
+    }
+  }
+
+</script>

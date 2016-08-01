@@ -1,0 +1,131 @@
+<input type="button" value="auto" onclick="autoRotate();">
+
+<script>
+
+  var map;
+  var chicago = {lat: 41.85, lng: -87.65};
+  var seoul = {lat: 10, lng: 10};
+  var marker;
+  function initMap() {
+    var image ={
+      url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Bae_Suzy_at_%22Uncontrollably_Fond%22_press_conference,_4_July_2016_05.jpg/250px-Bae_Suzy_at_%22Uncontrollably_Fond%22_press_conference,_4_July_2016_05.jpg',
+      size: new google.maps.Size(250,336),
+      origin: new google.maps.Point(0, 0),
+      anchor: new google.maps.Point(0,0),
+      scaledSize: new google.maps.Size(50,67.2)
+    }
+
+    var mapOptions ={
+      center: seoul,
+      zoom: 18,
+      mapTypeId: google.maps.MapTypeId.SATELLITE
+    };
+    map = new google.maps.Map(document.getElementById('map'), mapOptions);
+    marker = new google.maps.Marker({
+      position: seoul,
+      map: map,
+      title: 'Click to zoom',
+      animation: google.maps.Animation.DROP",
+      draggable: true,
+      icon: image
+    });
+
+    marker.addListener('click', toggleBounce);
+
+    var centerControlDiv = document.createElement('div');
+    var centerControl = new CenterControl(centerControlDiv, map);
+
+    centerControlDiv.index = 1;
+    map.controls[google.maps.ControlPosition.LEFT_BOTTOM].push(centerControlDiv);
+  }
+
+
+  function toggleBounce() {
+    if (marker.getAnimation() != null) {
+      marker.setAnimation(null);
+    }
+    else {
+      marker.setAnimation(google.maps.Animation.BOUNCE);
+    }
+  }
+
+
+  function CenterControl(controlDiv, map) {
+
+    // Set CSS for the control border.
+    var controlUI = document.createElement('div');
+    controlUI.style.backgroundColor = '#fff';
+    controlUI.style.border = '2px solid #fff';
+    controlUI.style.borderRadius = '3px';
+    controlUI.style.boxShadow = '0 2px 6px rgba(0,0,0,.3)';
+    controlUI.style.cursor = 'pointer';
+    controlUI.style.marginBottom = '22px';
+    controlUI.style.textAlign = 'center';
+    controlUI.title = 'Click to recenter the map';
+    controlDiv.appendChild(controlUI);
+
+    // Set CSS for the control interior.
+    var controlText = document.createElement('div');
+    controlText.style.color = 'rgb(25,25,25)';
+    controlText.style.fontFamily = 'Roboto,Arial,sans-serif';
+    controlText.style.fontSize = '16px';
+    controlText.style.lineHeight = '38px';
+    controlText.style.paddingLeft = '5px';
+    controlText.style.paddingRight = '5px';
+    controlText.innerHTML = 'Center Map';
+    controlUI.appendChild(controlText);
+
+    // Setup the click event listeners: simply set the map to Chicago.
+    controlUI.addEventListener('mouseenter', function() {
+      map.setCenter(chicago);
+    });
+    controlUI.addEventListener('mouseleave', function() {
+      map.setMapTypeId(google.maps.MapTypeId.ROADMAP);
+      if (navigator.geolocation) {
+        alert("gps됨");
+        navigator.geolocation.getCurrentPosition(function(position) {
+          var pos = {
+            lat: position.coords.latitude,
+            lng: position.coords.longitude
+          };
+          marker.setPosition(pos);
+          map.setCenter(pos);
+          }, function() {
+          handleLocationError(true, infoWindow, map.getCenter());
+        });
+        } else {
+        alert("gps안됨");
+        // Browser doesn't support Geolocation
+        handleLocationError(false, infoWindow, map.getCenter());
+      }
+    });
+
+  }
+
+
+
+  function placeMarkerAndPanTo(latLng, map) {
+    var marker = new google.maps.Marker({
+      position: latLng,
+      map: map,
+      draggable: true
+    });
+    attachSecretMessage(marker, String(latLng));
+  }
+
+  function attachSecretMessage(marker, secretMessage) {
+    var infowindow = new google.maps.InfoWindow({
+      content: secretMessage
+    });
+
+    marker.addListener('click', function() {
+      infowindow.open(marker.get('map'), marker);
+    });
+  }
+  function handleLocationError(browserHasGeolocation, infoWindow, pos) {
+    infoWindow.setPosition(pos);
+    infoWindow.setContent(browserHasGeolocation ?
+    'Error: The Geolocation service failed.' :
+    'Error: Your browser doesn\'t support geolocation.');
+  }
+</script>

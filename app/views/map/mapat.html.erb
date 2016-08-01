@@ -1,0 +1,59 @@
+<script>
+  var map;
+  function initMap() {
+    var customMapType = new google.maps.StyledMapType([
+    {
+      stylers: [
+      {hue: '#890000'},
+      {visibility: 'simplified'},
+      {gamma: 0.5},
+      {weight: 0.5}
+      ]
+    },
+    {
+      featureType: 'landscape',
+      elementType: 'labels',
+      stylers: [{visibility: 'on'}]
+    },
+    {
+      featureType: 'water',
+      stylers: [{color: '#890000'}]
+    }
+    ], {
+      name: 'Custom Style'
+    });
+    var customMapTypeId = 'custom_style';
+    var seoul = {lat:37.5, lng: 127.5};
+    map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 12,
+      center: {lat: 37.5, lng: 127.5},  // Brooklyn.
+      maxZoom: 12,
+      minZoom: 10,
+      mapTypeControlOptions: {
+        mapTypeIds: [google.maps.MapTypeId.ROADMAP, customMapTypeId]
+      }
+    });
+    var image ={
+      url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Bae_Suzy_at_%22Uncontrollably_Fond%22_press_conference,_4_July_2016_05.jpg/250px-Bae_Suzy_at_%22Uncontrollably_Fond%22_press_conference,_4_July_2016_05.jpg',
+      size: new google.maps.Size(250,336),
+      scaledSize: new google.maps.Size(50,67.2)
+    }
+
+    var marker = new google.maps.Marker({
+      icon: image,
+      position: seoul,
+      map: map,
+      animation: google.maps.Animation.BOUNCE,
+      title: 'Hello World!'
+    });
+    var num = map.getZoom();
+    var infowindow = new google.maps.InfoWindow({
+      <% a = File.read("/Users/macbook/developement/map_seminar/google_map/app/views/map/asdf.html").to_json %>
+      content:  "<%= a %>"
+    });
+
+    infowindow.open(map,marker);
+    map.mapTypes.set(customMapTypeId, customMapType);
+    map.setMapTypeId(customMapTypeId);
+  }
+</script>
